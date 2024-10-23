@@ -1,0 +1,92 @@
+using System;
+using System.Collections.Generic;
+
+class Owner
+{
+    private string name;
+    private string surname;
+    private int birthYear;
+    private string tcKimlik;
+
+    public string Name { get => name; }
+    public string Surname { get => surname; }
+    public int BirthYear { get => birthYear; }
+    public string TCKimlik { get => "Private"; }
+
+    public Owner(string name, string surname, int birthYear, string tcKimlik)
+    {
+        this.name = name;
+        this.surname = surname;
+        this.birthYear = birthYear;
+        this.tcKimlik = tcKimlik;
+    }
+}
+
+class Vehicle
+{
+    public string ChassisNumber { get; set; }
+    public string Type { get; set; }
+    public string Model { get; set; }
+    public int Year { get; set; }
+    public List<Owner> PreviousOwners { get; set; } = new List<Owner>();
+    public string AcquisitionDate { get; set; }
+    public decimal AcquisitionPrice { get; set; }
+
+    public Vehicle(string chassisNumber, string type, string model, int year, string acquisitionDate, decimal acquisitionPrice)
+    {
+        ChassisNumber = chassisNumber;
+        Type = type;
+        Model = model;
+        Year = year;
+        AcquisitionDate = acquisitionDate;
+        AcquisitionPrice = acquisitionPrice;
+    }
+
+    public void AddOwner(Owner owner)
+    {
+        PreviousOwners.Add(owner);
+    }
+
+    public void ListVehicleInfo()
+    {
+        Console.WriteLine($"Chassis Number: {ChassisNumber}");
+        if (PreviousOwners.Count > 0)
+        {
+            Console.WriteLine($"Current Owner: {PreviousOwners[PreviousOwners.Count - 1].Name} {PreviousOwners[PreviousOwners.Count - 1].Surname}");
+            Console.WriteLine($"Acquisition Date: {AcquisitionDate}");
+            Console.WriteLine($"Model Year: {Year}");
+            if (PreviousOwners.Count > 1)
+                Console.WriteLine($"Previous Owner: {PreviousOwners[PreviousOwners.Count - 2].Name} {PreviousOwners[PreviousOwners.Count - 2].Surname}");
+        }
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        Owner owner1 = new Owner("Murat", "Tasyurek", 1985, "12345678901");
+        Owner owner2 = new Owner("Ahmet", "Yilmaz", 1980, "23456789012");
+        Owner owner3 = new Owner("Ayse", "Kara", 1990, "34567890123");
+        Owner owner4 = new Owner("Fatma", "Demir", 1995, "45678901234");
+
+        Vehicle vehicle1 = new Vehicle("A99", "Taksi", "Toyota", 2018, "01.01.2020", 150000);
+        vehicle1.AddOwner(owner1);
+        vehicle1.AddOwner(owner2);
+
+        Vehicle vehicle2 = new Vehicle("B88", "Kamyon", "Mercedes", 2017, "01.06.2019", 200000);
+        vehicle2.AddOwner(owner3);
+        vehicle2.AddOwner(owner4);
+
+        Console.WriteLine("Enter 'list' to see all vehicles:");
+        string command = Console.ReadLine();
+        if (command.ToLower() == "list")
+        {
+            Console.WriteLine("\nVehicle 1 Info:");
+            vehicle1.ListVehicleInfo();
+
+            Console.WriteLine("\nVehicle 2 Info:");
+            vehicle2.ListVehicleInfo();
+        }
+    }
+}
